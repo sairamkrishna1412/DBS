@@ -11,15 +11,14 @@ passport.deserializeUser((id, done) => {
   return done(null, user);
 });
 
-const localVerify = async function (email, password, done) {
+const localVerify = async function (req, email, password, done) {
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
-      const newUser = await User.create({ email, password });
+      const newUser = await User.create({ email, password, userType : req.body.type, name : req.body.name });
       return done(null, newUser);
     }
-    const passMatch = await user.comparePassword(password, user.password);
-    if (!passMatch) {
+    if (password !== user.password) {
       return done(null, false);
     }
     return done(null, user);
@@ -32,6 +31,7 @@ const localStrategy = new passportLocal.Strategy(
   {
     usernameField: 'email',
     passwordField: 'password',
+    passReqToCallback: true
   },
   localVerify
 );

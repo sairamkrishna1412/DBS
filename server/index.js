@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const keys = require('./config/keys');
 
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const appointmentRoutes = require('./routes/appointmentRoutes');
 const errorHandler = require('./controllers/errorController');
 
 mongoose.connect(keys.mongoURI).then(
@@ -46,7 +48,12 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 
 // set up routes here
-// app.use('/auth',)
+app.use('/auth', authRoutes);
+
+app.use('/appointment', appointmentRoutes);
+
+app.use('/user', userRoutes);
+
 
 app.get('/api/user', (req, res) => {
   if (req.user) {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const appointentSchema = new Schema({
+const appointmentSchema = new Schema({
   name: {
     type: String,
     default: undefined,
@@ -11,6 +11,11 @@ const appointentSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'Provide a valid HNI ID']
+  },
+  senderId : {
+    type : mongoose.Schema.Types.ObjectId,
+    ref : 'User',
+    required: [true, 'Enter valid sender ID']
   },
   wmId : {
     type: mongoose.Schema.Types.ObjectId,
@@ -40,6 +45,6 @@ const appointentSchema = new Schema({
   },
 });
 
-const User = mongoose.model('Appointment', appointmentSchema);
+const appointment = mongoose.model('Appointment', appointmentSchema);
 
-module.exports = User;
+module.exports = appointment;
