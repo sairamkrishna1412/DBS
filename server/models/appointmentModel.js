@@ -27,7 +27,8 @@ const appointmentSchema = new Schema({
     required : [true, "Provide a schedule time"]
   },
   scheduleLog : {
-    type : [Date]
+    type : [Date],
+    default : []
   },
   placeType : {
     type : String,
@@ -40,8 +41,8 @@ const appointmentSchema = new Schema({
   },
   appointmentStatus : {
     type : String,
-    enum : {values : ['accept', 'reject', 'reschedule', 'finish'], message : '{VALUE} is not supported'},
-    required: [true, 'placeType is a required field']
+    enum : {values : ['accepted', 'rejected', 'rescheduled', 'finished', 'pending'], message : '{VALUE} is not supported'},
+    default : 'pending'
   },
 });
 

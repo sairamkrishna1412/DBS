@@ -54,7 +54,6 @@ app.use('/appointment', appointmentRoutes);
 
 app.use('/user', userRoutes);
 
-
 app.get('/api/user', (req, res) => {
   if (req.user) {
     return res.status(200).json({

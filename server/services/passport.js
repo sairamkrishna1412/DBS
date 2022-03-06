@@ -1,6 +1,7 @@
 const passport = require('passport');
 const passportLocal = require('passport-local');
 const User = require('../models/userModel');
+const catchAsync = require('../utils/catchAsync');
 
 passport.serializeUser((user, done) => {
   return done(null, user.id);
@@ -15,7 +16,12 @@ const localVerify = async function (req, email, password, done) {
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
-      const newUser = await User.create({ email, password, userType : req.body.type, name : req.body.name });
+      const newUser = await User.create({
+        email,
+        password,
+        userType: req.body.type,
+        name: req.body.name,
+      });
       return done(null, newUser);
     }
     if (password !== user.password) {
@@ -23,7 +29,7 @@ const localVerify = async function (req, email, password, done) {
     }
     return done(null, user);
   } catch (error) {
-    console.log(error);
+    done(error);
   }
 };
 
@@ -31,7 +37,7 @@ const localStrategy = new passportLocal.Strategy(
   {
     usernameField: 'email',
     passwordField: 'password',
-    passReqToCallback: true
+    passReqToCallback: true,
   },
   localVerify
 );
